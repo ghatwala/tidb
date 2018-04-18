@@ -12,6 +12,13 @@ env:
 
 # Run coverage tests.
 matrix:
+  include:
+    - os: linux-ppc64le
+      dist: xenial
+      sudo: required
+    - os: linux-ppc64le
+      dist: xenial
+      sudo: false
   fast_finish: true
   allow_failures:
     - go: "1.10"
@@ -24,4 +31,5 @@ before_install:
   # See https://github.com/golang/go/issues/12933
   - bash gitcookie.sh
 script:
-  - make dev
+  - if [ "$TRAVIS_OS_NAME" == "linux-ppc64le" ]; then make default; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make dev; fi
